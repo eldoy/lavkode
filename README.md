@@ -17,6 +17,9 @@ var lowcode = require('lavkode')
 
 // Page, including layout if specified
 var html = await lowcode.page($, page)
+
+// Actions
+var result = await lowcode.action($, action)
 ```
 
 Generally each section in the file refers to a directory in your app with the same name, so `filters` will look for files in the `app/filters` directory for example.
@@ -88,6 +91,36 @@ scripts:
 ```
 
 Layouts are not built separately, but included if specified in pages.
+
+### Actions
+
+Actions have the following possible structure (example):
+
+```yml
+filters:
+  - auth
+  - require-account
+setups:
+  - project
+  - task
+validate:
+  query:
+    id:
+      is: id
+  values:
+    name:
+      is: string
+```
+
+The actions override the `schema` actions if defined, and must be named one of:
+
+* create
+* update
+* delete
+* upload
+* find
+* get
+* search
 
 ### License
 
