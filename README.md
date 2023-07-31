@@ -79,7 +79,9 @@ head:
   - head
   - scripts
 body:
-  - headers
+  - header
+  - main
+  - footer
 scripts:
   - flash
   - setActiveLink
