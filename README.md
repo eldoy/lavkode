@@ -100,9 +100,15 @@ Actions have the following possible structure (example):
 filters:
   - auth
   - require-account
-setups:
-  - project
-  - task
+flows:
+  - do
+  - something
+allow:
+  query:
+    - id
+deny:
+  values:
+    - password
 validate:
   query:
     id:
@@ -110,6 +116,19 @@ validate:
   values:
     name:
       is: string
+
+# Experimental, if db is used, then we have a result
+db:
+  path: project/find
+  query:
+    id: $query.id
+  values: $values
+keep:
+  - id
+  - name
+remove:
+  - email
+  - password
 ```
 
 The actions override the `schema` actions if defined, and must be named one of:
