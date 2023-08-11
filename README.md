@@ -117,21 +117,35 @@ validate:
     name:
       is: string
 
-# Experimental, if db is used, then we have a result
+# If db is used, stored in result
 db:
   path: project/find
   query:
     id: $query.id
   values: $values
+
+# Fetch data from external API
+fetch:
+  url: https://api.eldoy.com/projects/list
+  params:
+    apikey: 1234
+
+# Keep only these attributes from result
 keep:
   - id
   - name
+
+# Remove these attributes from result
 remove:
   - email
   - password
+
+# Explicit return
+return:
+  ok: 1
 ```
 
-The actions override the `schema` actions if defined, and must be named one of:
+If the actions are named one of the following, they override the `schema` actions:
 
 * create
 * update
