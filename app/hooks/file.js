@@ -2,7 +2,7 @@ var lowcode = require('../../index.js')
 
 module.exports = function (app, props) {
   var { ext, content, dir, file, trail } = props
-  if (ext == 'yml') {
+  if (ext == 'yml' || ext == 'json') {
     if (dir.startsWith('app/layouts')) {
       return lowcode.layout(content)
     }
