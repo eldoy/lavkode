@@ -1,3 +1,5 @@
 title: Hello
 views:
   - hero
+scripts:
+  - loadData

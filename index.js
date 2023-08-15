@@ -1,13 +1,33 @@
 var { lodash, mkdir, write, exist } = require('extras')
 var path = require('path')
 
-function defaultPage(name) {
-  return [
-    'module.exports = async function($) {',
-    '  return /* HTML */ `' + name + '`',
-    '}',
-    ''
-  ].join('\n')
+function defaultFunction(name) {
+  if (name.startsWith('app/views')) {
+    return [
+      'module.exports = async function ($) {',
+      '  return /* HTML */ `' + name + '`',
+      '}',
+      ''
+    ].join('\n')
+  }
+  if (name.startsWith('app/scripts')) {
+    return [
+      'module.exports = async function () {',
+      `  return ''`,
+      '}',
+      ''
+    ].join('\n')
+  }
+}
+
+// 'views', 'layout.head'
+function createFile(dir, name) {
+  var base = `app/${dir}`
+  mkdir(base)
+  var file = `${base}/${name.replace(/\./g, path.sep)}.js`
+  if (!exist(file)) {
+    write(file, defaultFunction(file))
+  }
 }
 
 // title: Example low code page
@@ -26,27 +46,6 @@ function defaultPage(name) {
 // scripts:
 //   - handleClick
 //   - handleToggleSection
-
-async function pack($, content, section) {
-  var items = content[section] || []
-  var html = ''
-  for (var item of items) {
-    var key = `${section}.${item}`
-    var i = lodash.get($.app, key)
-    if (typeof i == 'function') {
-      html += await i($)
-    } else {
-      var base = `app/${section}`
-      mkdir(base)
-      var name = `${base}/${item.replace(/\./g, path.sep)}.js`
-      if (!exist(name)) {
-        write(name, defaultPage(name))
-      }
-    }
-  }
-  return html
-}
-
 function page(app, content) {
   var {
     title,
@@ -63,9 +62,46 @@ function page(app, content) {
     $.page.desc = desc
     $.page.layout = layout
 
+    if (filters.length) {
+      await $.filters(filters)
+    }
+
+    if (setups.length) {
+      await $.setups(setups)
+    }
+
     var html = ''
-    html += await pack($, content, 'views')
-    html += await pack($, content, 'scripts')
+    for (var view of views) {
+      var v = lodash.get(app, `views.${view}`)
+      if (!v) {
+        createFile('views', view)
+      }
+      if (typeof v == 'function') {
+        html += `${await v($)}\n`
+      }
+    }
+    if (scripts.length) {
+      html += '<script>\n'
+      for (var script of scripts) {
+        var s = lodash.get(app, `scripts.${script}`)
+        if (!s) {
+          createFile('scripts', script)
+        }
+        if (typeof s == 'function') {
+          var name = script.split('.').reverse()[0]
+          html += `window.${s.name || name} = ${s}\n`
+        }
+        if (typeof s == 'object') {
+          for (var name of s) {
+            var fn = s[name]
+            if (typeof fn == 'function') {
+              html += `window.${s.name} = ${s}\n`
+            }
+          }
+        }
+      }
+      html += '</script>\n'
+    }
     return html
   }
 }
