@@ -1,7 +1,13 @@
-function page($, p) {}
+function page(content) {
+  console.log(content)
+}
 
-function layout($, p) {}
+function layout(content) {
+  console.log(content)
+}
 
-function action($, a) {}
+function action(content) {
+  console.log(content)
+}
 
 module.exports = { page, layout, action }
