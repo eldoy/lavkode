@@ -106,6 +106,17 @@ function page(app, content) {
   }
 }
 
+// Example low code layout:
+// head:
+//   - head
+//   - scripts
+// body:
+//   - header
+//   - main
+//   - footer
+// scripts:
+//   - flash
+//   - setActiveLink
 function layout(app, content) {
   console.log(content)
 }

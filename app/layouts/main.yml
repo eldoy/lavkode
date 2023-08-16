@@ -1,0 +1,12 @@
+head:
+  scripts:
+    - layout.head
+  views:
+    - layout.head
+body:
+  scripts:
+    - init
+  views:
+    - header
+    - main
+    - footer
