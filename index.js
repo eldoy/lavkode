@@ -30,9 +30,46 @@ function createFile(dir, name) {
   }
 }
 
-function generateViews() {}
+async function generateViews($, views) {
+  var html = ''
+  for (var view of views) {
+    var v = lodash.get($, `app.views.${view}`)
+    if (!v) {
+      createFile('views', view)
+    }
+    if (typeof v == 'function') {
+      html += `${await v($)}\n`
+    }
+  }
+  return html
+}
 
-function generateScripts() {}
+function generateScripts($, scripts) {
+  if (!scripts.length) {
+    return ''
+  }
+  html += '<script>\n'
+  for (var script of scripts) {
+    var s = lodash.get($, `app.scripts.${script}`)
+    if (!s) {
+      createFile('scripts', script)
+    }
+    if (typeof s == 'function') {
+      var name = script.split('.').reverse()[0]
+      html += `window.${s.name || name} = ${s}\n`
+    }
+    if (typeof s == 'object') {
+      for (var name of s) {
+        var fn = s[name]
+        if (typeof fn == 'function') {
+          html += `window.${s.name} = ${s}\n`
+        }
+      }
+    }
+  }
+  html += '</script>\n'
+  return html
+}
 
 // title: Example low code page
 // desc: This it the meta description
@@ -69,45 +106,12 @@ function page(content) {
     if (filters.length) {
       await $.filters(filters)
     }
-
     if (setups.length) {
       await $.setups(setups)
     }
 
-    // var html = generateViews($, app, views, )
-    var html = ''
-    for (var view of views) {
-      var v = lodash.get($, `app.views.${view}`)
-      if (!v) {
-        createFile('views', view)
-      }
-      if (typeof v == 'function') {
-        html += `${await v($)}\n`
-      }
-    }
-    if (scripts.length) {
-      html += '<script>\n'
-      for (var script of scripts) {
-        var s = lodash.get($, `app.scripts.${script}`)
-        if (!s) {
-          createFile('scripts', script)
-        }
-        if (typeof s == 'function') {
-          var name = script.split('.').reverse()[0]
-          html += `window.${s.name || name} = ${s}\n`
-        }
-        if (typeof s == 'object') {
-          for (var name of s) {
-            var fn = s[name]
-            if (typeof fn == 'function') {
-              html += `window.${s.name} = ${s}\n`
-            }
-          }
-        }
-      }
-      html += '</script>\n'
-    }
-    return html
+    var html = await generateViews($, views)
+    return (html += generateScripts($, scripts))
   }
 }
 
