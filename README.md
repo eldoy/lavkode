@@ -66,7 +66,7 @@ views:
 To build the page and return HTML, including layout, do this:
 
 ```js
-var html = await lowcode.page($, page)
+var html = await lowcode.page(page)
 ```
 
 The default name for layouts is `main`, and will be used if not specified with the page.
@@ -87,6 +87,12 @@ body:
 ```
 
 Layouts are not built separately, but included if specified in pages.
+
+To build the layour and return HTML, do this:
+
+```js
+var html = await lowcode.layout(layout)
+```
 
 ### Actions
 
@@ -130,6 +136,12 @@ remove:
 # Explicit return
 return:
   ok: 1
+```
+
+To build the layour and return HTML, do this:
+
+```js
+var fn = await lowcode.action(action)
 ```
 
 If the actions are named one of the following, they override the `schema` actions:
