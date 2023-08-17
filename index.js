@@ -88,25 +88,20 @@ function generateScripts($, scripts = []) {
 //   - content
 //   - outro
 function page(content) {
-  var {
-    title,
-    desc,
-    layout,
-    filters = [],
-    setups = [],
-    scripts = [],
-    views = []
-  } = content
+  var { title, desc, layout, filters, flows, setups, scripts, views } = content
 
   return async function ($) {
     $.page.title = title
     $.page.desc = desc
     $.page.layout = layout
 
-    if (filters.length) {
+    if (filters) {
       await $.filters(filters)
     }
-    if (setups.length) {
+    if (flows) {
+      await $.flows(flows)
+    }
+    if (setups) {
       await $.setups(setups)
     }
     var html = generateScripts($, scripts)
@@ -174,12 +169,69 @@ function layout(content) {
 // return:
 //   ok: 1
 function action(content) {
-  console.log(content)
-  console.log('ACTION')
-  var { return: ret } = content
+  var {
+    filters,
+    flows,
+    setups,
+    allow,
+    deny,
+    validate,
+    db,
+    keep,
+    remove,
+    return: ret
+  } = content
 
   return async function ($) {
-    return ret
+    var result = {}
+
+    if (filters) {
+      await $.filters(filters)
+    }
+    if (flows) {
+      await $.flows(flows)
+    }
+    if (setups) {
+      await $.setups(setups)
+    }
+    if (allow) {
+      await $.allow(allow)
+    }
+    if (deny) {
+      await $.deny(deny)
+    }
+    if (validate) {
+      await $.validate(validate)
+    }
+    if (db && $.db) {
+      let { query = {}, values = {}, options = {} } = $.params
+      let { path } = db
+      let [name, method] = path.split('/')
+      let data = {}
+      if (method == 'find' || method == 'get') {
+        data = { query, options }
+      }
+      if (method == 'create') {
+        data = { values }
+      }
+      if (method == 'update') {
+        data = { query, values }
+      }
+      if (method == 'delete') {
+        data = { query }
+      }
+      result = await $.db(name)[method](data)
+    }
+    if (keep) {
+      await $.keep(result, keep)
+    }
+    if (remove) {
+      await $.remove(result, remove)
+    }
+    if (ret) {
+      result = ret
+    }
+    return result
   }
 }
 

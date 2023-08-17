@@ -1,4 +1,6 @@
 filters:
   - hello
+db:
+  path: project/find
 return:
   ok: 1
