@@ -1,3 +1,3 @@
 module.exports = async function ($) {
-  return /* HTML */ `app/views/main.js`
+  return /* HTML */ `<main>${$.page.content}</main>`
 }

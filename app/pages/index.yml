@@ -1,5 +1,6 @@
 title: Hello
-views:
-  - hero
 scripts:
   - loadData
+views:
+  - hero
+  - pages.index.init

@@ -109,9 +109,9 @@ function page(content) {
     if (setups.length) {
       await $.setups(setups)
     }
-
     var html = generateScripts($, scripts)
-    return (html += await generateViews($, views))
+    html += await generateViews($, views)
+    return html
   }
 }
 
@@ -141,8 +141,46 @@ function layout(content) {
   }
 }
 
+// filters:
+//   - auth
+//   - require-account
+// flows:
+//   - do
+//   - something
+// allow:
+//   query:
+//     - id
+// deny:
+//   values:
+//     - password
+// validate:
+//   query:
+//     id:
+//       is: id
+//   values:
+//     name:
+//       is: string
+// db:
+//   path: project/find
+//   query:
+//     id: $query.id
+//   values: $values
+// keep:
+//   - id
+//   - name
+// remove:
+//   - email
+//   - password
+// return:
+//   ok: 1
 function action(content) {
   console.log(content)
+  console.log('ACTION')
+  var { return: ret } = content
+
+  return async function ($) {
+    return ret
+  }
 }
 
 module.exports = { page, layout, action }

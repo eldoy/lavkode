@@ -1,0 +1,4 @@
+filters:
+  - hello
+return:
+  ok: 1
