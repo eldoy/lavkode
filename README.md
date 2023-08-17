@@ -113,18 +113,9 @@ validate:
     name:
       is: string
 
-# If db is used, stored in result
+# If db is used, it is stored in result
 db:
   path: project/find
-  query:
-    id: $query.id
-  values: $values
-
-# Fetch data from external API
-fetch:
-  url: https://api.eldoy.com/projects/list
-  params:
-    apikey: 1234
 
 # Keep only these attributes from result
 keep:
