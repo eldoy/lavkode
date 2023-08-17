@@ -46,7 +46,7 @@ function createFile(dir, name) {
 // scripts:
 //   - handleClick
 //   - handleToggleSection
-function page(app, content) {
+function page(content) {
   var {
     title,
     desc,
@@ -72,7 +72,7 @@ function page(app, content) {
 
     var html = ''
     for (var view of views) {
-      var v = lodash.get(app, `views.${view}`)
+      var v = lodash.get($, `app.views.${view}`)
       if (!v) {
         createFile('views', view)
       }
@@ -83,7 +83,7 @@ function page(app, content) {
     if (scripts.length) {
       html += '<script>\n'
       for (var script of scripts) {
-        var s = lodash.get(app, `scripts.${script}`)
+        var s = lodash.get($, `app.scripts.${script}`)
         if (!s) {
           createFile('scripts', script)
         }
@@ -117,11 +117,11 @@ function page(app, content) {
 // scripts:
 //   - flash
 //   - setActiveLink
-function layout(app, content) {
+function layout(content) {
   console.log(content)
 }
 
-function action(app, content) {
+function action(content) {
   console.log(content)
 }
 
