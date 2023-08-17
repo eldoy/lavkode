@@ -53,14 +53,14 @@ filters:
   - login-required
 setups:
   - load-project-data
+scripts:
+  - handleClick
+  - handleToggleSection
 views:
   - hero
   - intro
   - content
   - outro
-scripts:
-  - handleClick
-  - handleToggleSection
 ```
 
 To build the page and return HTML, including layout, do this:

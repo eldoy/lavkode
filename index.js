@@ -30,7 +30,7 @@ function createFile(dir, name) {
   }
 }
 
-async function generateViews($, views) {
+async function generateViews($, views = []) {
   var html = ''
   for (var view of views) {
     var v = lodash.get($, `app.views.${view}`)
@@ -44,11 +44,11 @@ async function generateViews($, views) {
   return html
 }
 
-function generateScripts($, scripts) {
+function generateScripts($, scripts = []) {
   if (!scripts.length) {
     return ''
   }
-  html += '<script>\n'
+  var html = '<script>\n'
   for (var script of scripts) {
     var s = lodash.get($, `app.scripts.${script}`)
     if (!s) {
@@ -79,14 +79,14 @@ function generateScripts($, scripts) {
 //   - login-required
 // setups:
 //   - load-project-data
+// scripts:
+//   - handleClick
+//   - handleToggleSection
 // views:
 //   - hero
 //   - intro
 //   - content
 //   - outro
-// scripts:
-//   - handleClick
-//   - handleToggleSection
 function page(content) {
   var {
     title,
@@ -94,8 +94,8 @@ function page(content) {
     layout,
     filters = [],
     setups = [],
-    views = [],
-    scripts = []
+    scripts = [],
+    views = []
   } = content
 
   return async function ($) {
@@ -110,8 +110,8 @@ function page(content) {
       await $.setups(setups)
     }
 
-    var html = await generateViews($, views)
-    return (html += generateScripts($, scripts))
+    var html = generateScripts($, scripts)
+    return (html += await generateViews($, views))
   }
 }
 
@@ -122,8 +122,23 @@ function page(content) {
 // body:
 //   - scripts
 //   - views
-function layout(app, content) {
-  console.log(content)
+function layout(content) {
+  var { head = {}, body = {} } = content
+
+  return async function ($) {
+    var html = '<!DOCTYPE html>\n'
+    html += `<html lang="${$.lang || 'en'}">\n`
+    html += '  <head>\n'
+    html += generateScripts($, head.scripts)
+    html += await generateViews($, head.views)
+    html += '  </head>\n'
+    html += '  <body>\n'
+    html += generateScripts($, body.scripts)
+    html += await generateViews($, body.views)
+    html += '  </body>\n'
+    html += `</html>\n`
+    return html
+  }
 }
 
 function action(content) {
