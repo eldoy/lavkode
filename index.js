@@ -30,6 +30,10 @@ function createFile(dir, name) {
   }
 }
 
+function generateViews() {}
+
+function generateScripts() {}
+
 // title: Example low code page
 // desc: This it the meta description
 // layout: main
@@ -70,6 +74,7 @@ function page(content) {
       await $.setups(setups)
     }
 
+    // var html = generateViews($, app, views, )
     var html = ''
     for (var view of views) {
       var v = lodash.get($, `app.views.${view}`)
@@ -108,16 +113,12 @@ function page(content) {
 
 // Example low code layout:
 // head:
-//   - head
 //   - scripts
+//   - views
 // body:
-//   - header
-//   - main
-//   - footer
-// scripts:
-//   - flash
-//   - setActiveLink
-function layout(content) {
+//   - scripts
+//   - views
+function layout(app, content) {
   console.log(content)
 }
 

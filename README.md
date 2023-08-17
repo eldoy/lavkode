@@ -79,15 +79,11 @@ Layouts are used with pages and have a this structure:
 
 ```yml
 head:
-  - head
   - scripts
+  - views
 body:
-  - header
-  - main
-  - footer
-scripts:
-  - flash
-  - setActiveLink
+  - scripts
+  - views
 ```
 
 Layouts are not built separately, but included if specified in pages.
