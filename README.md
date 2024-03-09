@@ -88,7 +88,7 @@ body:
 
 Layouts are not built separately, but included if specified in pages.
 
-To build the layour and return HTML, do this:
+To build the layout and return HTML, do this:
 
 ```js
 var html = await lowcode.layout(layout)
