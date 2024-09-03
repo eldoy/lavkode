@@ -1,5 +1,6 @@
-var { lodash, mkdir, write, exist } = require('extras')
-var path = require('path')
+var path = require('node:path')
+var extras = require('extras')
+var lodash = require('lodash')
 
 function defaultFunction(name) {
   if (name.startsWith('app/views')) {
@@ -23,10 +24,10 @@ function defaultFunction(name) {
 // 'views', 'layout.head'
 function createFile(dir, name) {
   var base = `app/${dir}`
-  mkdir(base)
+  extras.exec(`mkdir -p ${base}`)
   var file = `${base}/${name.replace(/\./g, path.sep)}.js`
-  if (!exist(file)) {
-    write(file, defaultFunction(file))
+  if (!extras.exist(file)) {
+    extras.write(file, defaultFunction(file))
   }
 }
 

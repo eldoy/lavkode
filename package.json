@@ -24,13 +24,14 @@
   },
   "homepage": "https://github.com/eldoy/lavkode#readme",
   "devDependencies": {
-    "concurrently": "^8.2.0",
-    "mongowave": "^0.5.0",
-    "sass": "^1.65.1",
+    "concurrently": "^8.2.2",
+    "mongowave": "^0.15.0",
+    "sass": "^1.77.8",
     "spekk": "^0.2.2",
-    "waveorb": "^0.38.3"
+    "waveorb": "^0.45.1"
   },
   "dependencies": {
-    "extras": "^0.12.1"
+    "extras": "^0.14.2",
+    "lodash": "^4.17.21"
   }
 }
