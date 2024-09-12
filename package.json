@@ -31,7 +31,6 @@
     "waveorb": "^0.45.1"
   },
   "dependencies": {
-    "extras": "^0.14.2",
-    "lodash": "^4.17.21"
+    "extras": "^0.14.2"
   }
 }

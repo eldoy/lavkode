@@ -1,6 +1,5 @@
 var path = require('node:path')
 var extras = require('extras')
-var lodash = require('lodash')
 
 function defaultFunction(name) {
   if (name.startsWith('app/views')) {
@@ -34,7 +33,7 @@ function createFile(dir, name) {
 async function generateViews($, views = []) {
   var html = ''
   for (var view of views) {
-    var v = lodash.get($, `app.views.${view}`)
+    var v = extras.get($, `app.views.${view}`)
     if (!v) {
       createFile('views', view)
     }
@@ -51,7 +50,7 @@ function generateScripts($, scripts = []) {
   }
   var html = '<script>\n'
   for (var script of scripts) {
-    var s = lodash.get($, `app.scripts.${script}`)
+    var s = extras.get($, `app.scripts.${script}`)
     if (!s) {
       createFile('scripts', script)
     }
