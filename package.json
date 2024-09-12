@@ -5,13 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "nodemon -q --exec spekk",
-    "dev": "npm run clear:css && npm run build:css && concurrently -n 🔥,💗 \"npm run watch:app\" \"npm run watch:css\"",
-    "watch:app": "WAVEORB_PORT=5330 nodemon -e '*' -i dist -x waveorb serve",
-    "watch:css": "sass --watch app/assets/scss/app.scss app/assets/css/build/app.css",
-    "build:css": "sass app/assets/scss/app.scss app/assets/css/build/app.css",
-    "build:css:min": "sass --style compressed --no-source-map app/assets/scss/app.scss app/assets/css/build/app.css",
-    "clear:css": "rm -rf app/assets/css/build",
-    "build": "npm run clear:css && npm run build:css:min && waveorb build"
+    "dev": "WAVEORB_PORT=5330 nodemon -e '*' -i dist -x waveorb serve"
   },
   "repository": {
     "type": "git",
@@ -24,13 +18,10 @@
   },
   "homepage": "https://github.com/eldoy/lavkode#readme",
   "devDependencies": {
-    "concurrently": "^8.2.2",
     "mongowave": "^0.15.0",
-    "sass": "^1.77.8",
-    "spekk": "^0.2.2",
-    "waveorb": "^0.45.1"
+    "waveorb": "^0.45.5"
   },
   "dependencies": {
-    "extras": "^0.14.2"
+    "extras": "^0.15.0"
   }
 }
